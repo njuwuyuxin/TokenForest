@@ -1,0 +1,45 @@
+# Cyber Bonsai runtime config.
+# All values are hot-read only on startup right now.
+
+[render]
+# Token rate that maps to 100% rain intensity.
+# Higher value = harder to reach heavy rain.
+max_token_rate = 2400.0
+
+[network]
+# Sampling interval for network throughput collection.
+# Lower value = faster reaction but more jitter and more system calls.
+poll_interval_ms = 400
+
+# Conversion factor from bytes/sec to token/sec estimate.
+# token_est ~= (rx_bytes_per_sec + tx_bytes_per_sec) / bytes_per_token_estimate
+bytes_per_token_estimate = 4.1
+
+[smoothing]
+# Number of recent raw samples used for robust target estimation.
+# Larger window = smoother, but slower to react.
+window_size = 18
+
+# Exponential smoothing time constant when target is rising.
+# Larger value = slower ramp-up after load spikes.
+tau_rise_seconds = 2.8
+
+# Exponential smoothing time constant when target is falling.
+# Larger value = slower decay after a burst.
+tau_fall_seconds = 5.5
+
+# Weight for median(history) in robust target.
+median_weight = 0.58
+
+# Weight for clipped latest sample in robust target.
+latest_weight = 0.42
+
+# Percentile used as clipping baseline (0.5..0.99).
+# Higher value lets more spikes pass through.
+clip_percentile = 0.8
+
+# Multiplier applied to percentile baseline before clipping latest sample.
+clip_multiplier = 1.25
+
+# Additive allowance in tokens/s for latest-sample clipping.
+clip_offset = 120.0
