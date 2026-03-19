@@ -1,8 +1,10 @@
 # TokenForest
 
-TokenForest is a Rust TUI that visualizes estimated token throughput as a rainy forest scene.
-It tracks Codex/Claude-related process network activity on Windows and maps traffic to
-rain intensity in real time.
+TokenForest 是一个 Windows 上的 Rust 终端可视化工具（TUI），
+用于实时监控 Codex / Claude Code 相关进程的网络吞吐，并将估算的 token 速率映射成森林雨景动画，帮助你直观感知“模型输出负载”变化。
+
+TokenForest is a Rust TUI for Windows that monitors network throughput of Codex/Claude Code related processes,
+then maps estimated token rate to a live rainy-forest scene so you can see model workload changes at a glance.
 
 ## Highlights
 
