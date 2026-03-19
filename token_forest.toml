@@ -1,4 +1,4 @@
-# Cyber Bonsai runtime config.
+# TokenForest runtime config.
 # All values are hot-read only on startup right now.
 
 [render]

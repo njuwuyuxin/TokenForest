@@ -5,7 +5,7 @@ use std::time::Duration;
 use anyhow::{Context, Result};
 use serde::Deserialize;
 
-pub const DEFAULT_CONFIG_PATH: &str = "cyber_bonsai.toml";
+pub const DEFAULT_CONFIG_PATH: &str = "token_forest.toml";
 
 #[derive(Clone, Debug, Default, Deserialize)]
 #[serde(default)]
