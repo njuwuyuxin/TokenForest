@@ -69,11 +69,6 @@ foreach ($target in $builtTargets) {
     }
     Copy-Item -Path $exeSource -Destination (Join-Path $pkgDir "token_forest.exe")
 
-    $configSource = Join-Path $repoRoot "token_forest.toml"
-    if (Test-Path $configSource) {
-        Copy-Item -Path $configSource -Destination (Join-Path $pkgDir "token_forest.toml")
-    }
-
     if (-not $NoZip) {
         $zipPath = Join-Path $distRoot "$pkgName.zip"
         if (Test-Path $zipPath) {
