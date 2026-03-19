@@ -1,1 +1,7 @@
+# Build artifacts
 /target
+/dist
+
+# Local OS/editor noise
+Thumbs.db
+*.log

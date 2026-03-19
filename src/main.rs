@@ -462,7 +462,7 @@ impl Widget for RainForestWidget<'_> {
             }
         }
 
-        draw_token_forest_logo(buf, area, ground_y);
+        draw_token_forest_logo(buf, area, ground_y, self.app.frame_index);
     }
 }
 
@@ -918,6 +918,7 @@ fn draw_token_forest_logo(
     buf: &mut ratatui::buffer::Buffer,
     area: ratatui::layout::Rect,
     ground_y: u16,
+    frame_index: u64,
 ) {
     const LOGO_LARGE: [&str; 4] = [
         " _____     _              ___                    _   ",
@@ -931,12 +932,23 @@ fn draw_token_forest_logo(
         return;
     }
 
-    let shadow_style = Style::default().fg(Color::Rgb(24, 56, 34)).bg(Color::Black);
+    let pulse = 0.8 + 0.2 * ((frame_index as f32 * 0.08).sin() * 0.5 + 0.5);
+    let shadow_style = Style::default()
+        .fg(scale_rgb((24, 56, 34), pulse * 0.9))
+        .bg(Color::Black);
     let front_styles = [
-        Style::default().fg(Color::Rgb(198, 246, 208)).bg(Color::Black),
-        Style::default().fg(Color::Rgb(158, 222, 172)).bg(Color::Black),
-        Style::default().fg(Color::Rgb(114, 191, 132)).bg(Color::Black),
-        Style::default().fg(Color::Rgb(84, 154, 100)).bg(Color::Black),
+        Style::default()
+            .fg(scale_rgb((198, 246, 208), pulse * 1.03))
+            .bg(Color::Black),
+        Style::default()
+            .fg(scale_rgb((158, 222, 172), pulse * 1.01))
+            .bg(Color::Black),
+        Style::default()
+            .fg(scale_rgb((114, 191, 132), pulse * 0.99))
+            .bg(Color::Black),
+        Style::default()
+            .fg(scale_rgb((84, 154, 100), pulse * 0.97))
+            .bg(Color::Black),
     ];
 
     let large_width = LOGO_LARGE.iter().map(|line| line.len()).max().unwrap_or(0) as u16;
@@ -993,9 +1005,19 @@ fn draw_token_forest_logo(
             x0 as i32 + col as i32,
             top as i32,
             ch,
-            Style::default().fg(Color::Rgb(158, 222, 172)).bg(Color::Black),
+            Style::default()
+                .fg(scale_rgb((158, 222, 172), pulse))
+                .bg(Color::Black),
         );
     }
+}
+
+fn scale_rgb(color: (u8, u8, u8), scale: f32) -> Color {
+    let scale = scale.clamp(0.0, 1.35);
+    let r = ((color.0 as f32) * scale).clamp(0.0, 255.0).round() as u8;
+    let g = ((color.1 as f32) * scale).clamp(0.0, 255.0).round() as u8;
+    let b = ((color.2 as f32) * scale).clamp(0.0, 255.0).round() as u8;
+    Color::Rgb(r, g, b)
 }
 
 fn lerp_f32(start: f32, end: f32, t: f32) -> f32 {
