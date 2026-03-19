@@ -15,6 +15,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\package_windows.ps1
 
 Outputs are written to `dist/` as target-specific folders and zip files.
 By default, package output contains only `token_forest.exe` (no `token_forest.toml`).
+If `assets/icon.ico` exists, it is embedded into the exe during build.
 
 ## Useful options
 

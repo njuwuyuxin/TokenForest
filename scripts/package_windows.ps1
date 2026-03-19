@@ -56,10 +56,18 @@ $distRoot = Join-Path $repoRoot "dist"
 New-Item -ItemType Directory -Path $distRoot -Force | Out-Null
 
 foreach ($target in $builtTargets) {
-    $pkgName = "token_forest-v$version-$target"
+    $pkgBaseName = "token_forest-v$version-$target"
+    $pkgName = $pkgBaseName
     $pkgDir = Join-Path $distRoot $pkgName
     if (Test-Path $pkgDir) {
-        Remove-Item -Path $pkgDir -Recurse -Force
+        try {
+            Remove-Item -Path $pkgDir -Recurse -Force
+        } catch {
+            $suffix = Get-Date -Format "yyyyMMdd-HHmmss"
+            $pkgName = "$pkgBaseName-$suffix"
+            $pkgDir = Join-Path $distRoot $pkgName
+            Write-Warning "Could not overwrite existing package folder. Using $pkgName instead."
+        }
     }
     New-Item -ItemType Directory -Path $pkgDir -Force | Out-Null
 

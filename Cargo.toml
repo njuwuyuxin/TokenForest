@@ -2,6 +2,7 @@
 name = "token_forest"
 version = "0.1.0"
 edition = "2024"
+build = "build.rs"
 
 [dependencies]
 anyhow = "1.0"
@@ -10,3 +11,6 @@ ratatui = "0.29"
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.9"
 winapi = { version = "0.3", features = ["handleapi", "iphlpapi", "iprtrmib", "tcpestats", "tcpmib", "tlhelp32", "ws2def"] }
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"

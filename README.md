@@ -53,6 +53,12 @@ Typical output:
 - `dist/token_forest-v<version>-x86_64-pc-windows-msvc.zip`
 - `dist/token_forest-v<version>-<target>/token_forest.exe`
 
+## Exe icon
+
+- Put icon file at `assets/icon.ico` before building.
+- On Windows, build embeds that icon into the exe automatically.
+- If `assets/icon.ico` is missing, build still succeeds with default exe icon.
+
 ## Configuration
 
 Edit `token_forest.toml` to tune rendering, sampling interval, and smoothing behavior.
