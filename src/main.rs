@@ -462,19 +462,7 @@ impl Widget for RainForestWidget<'_> {
             }
         }
 
-        let title = " token forest prototype ";
-        for (i, ch) in title.chars().enumerate() {
-            let x = area.x + 1 + i as u16;
-            if x < area.x + area.width - 1 && area.y + 1 < ground_y {
-                put(
-                    buf,
-                    x,
-                    area.y + 1,
-                    ch,
-                    Style::default().fg(Color::Gray).bg(Color::Black),
-                );
-            }
-        }
+        draw_token_forest_logo(buf, area, ground_y);
     }
 }
 
@@ -923,6 +911,90 @@ fn put_if_inside(
     let y_max = (area.y + area.height) as i32;
     if x >= x_min && x < x_max && y >= y_min && y < y_max {
         put(buf, x as u16, y as u16, ch, style);
+    }
+}
+
+fn draw_token_forest_logo(
+    buf: &mut ratatui::buffer::Buffer,
+    area: ratatui::layout::Rect,
+    ground_y: u16,
+) {
+    const LOGO_LARGE: [&str; 4] = [
+        " _____     _              ___                    _   ",
+        "|_   _|__ | |_____ _ _   | __|__ _ _ _ ___ _____| |_ ",
+        "  | |/ _ \\| / / -_) ' \\  | _/ _ \\ '_/ -_|_-<_-<|  _|",
+        "  |_|\\___/|_\\_\\___|_||_| |_|\\___/_| \\___/__/__/ \\__|",
+    ];
+
+    let top = area.y.saturating_add(1);
+    if top >= ground_y {
+        return;
+    }
+
+    let shadow_style = Style::default().fg(Color::Rgb(24, 56, 34)).bg(Color::Black);
+    let front_styles = [
+        Style::default().fg(Color::Rgb(198, 246, 208)).bg(Color::Black),
+        Style::default().fg(Color::Rgb(158, 222, 172)).bg(Color::Black),
+        Style::default().fg(Color::Rgb(114, 191, 132)).bg(Color::Black),
+        Style::default().fg(Color::Rgb(84, 154, 100)).bg(Color::Black),
+    ];
+
+    let large_width = LOGO_LARGE.iter().map(|line| line.len()).max().unwrap_or(0) as u16;
+    let large_height = LOGO_LARGE.len() as u16;
+    let can_draw_large = area.width >= large_width.saturating_add(4)
+        && ground_y >= top.saturating_add(large_height).saturating_add(1);
+
+    if can_draw_large {
+        let x0 = area.x.saturating_add(2);
+        for (row, line) in LOGO_LARGE.iter().enumerate() {
+            let y = top + row as u16;
+            for (col, ch) in line.chars().enumerate() {
+                if ch == ' ' {
+                    continue;
+                }
+                put_if_inside(
+                    buf,
+                    area,
+                    x0 as i32 + col as i32 + 2,
+                    y as i32 + 1,
+                    ch,
+                    shadow_style,
+                );
+                put_if_inside(
+                    buf,
+                    area,
+                    x0 as i32 + col as i32,
+                    y as i32,
+                    ch,
+                    front_styles[row.min(front_styles.len() - 1)],
+                );
+            }
+        }
+        return;
+    }
+
+    let compact = "Token Forest";
+    let x0 = area.x.saturating_add(2);
+    for (col, ch) in compact.chars().enumerate() {
+        if ch == ' ' {
+            continue;
+        }
+        put_if_inside(
+            buf,
+            area,
+            x0 as i32 + col as i32 + 1,
+            top as i32 + 1,
+            ch,
+            shadow_style,
+        );
+        put_if_inside(
+            buf,
+            area,
+            x0 as i32 + col as i32,
+            top as i32,
+            ch,
+            Style::default().fg(Color::Rgb(158, 222, 172)).bg(Color::Black),
+        );
     }
 }
 
