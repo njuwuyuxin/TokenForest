@@ -1,5 +1,5 @@
 # TokenForest
-
+![](/assets/token_forest_5s.gif)
 TokenForest 是一个 Windows 上的 Rust 终端可视化工具（TUI），
 用于实时监控 Codex / Claude Code 相关进程的网络吞吐，并将估算的 token 速率映射成森林雨景动画，帮助你直观感知“模型输出负载”变化。
 
